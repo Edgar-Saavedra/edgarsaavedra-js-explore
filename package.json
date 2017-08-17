@@ -1,0 +1,19 @@
+{
+  "name": "edgarsaavedra-js-explore",
+  "version": "1.0.0",
+  "description": "A repo exploring all things JS!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore.git"
+  },
+  "author": "Edgar Saavedra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore/issues"
+  },
+  "homepage": "https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore#readme"
+}
