@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore/issues"
   },
-  "homepage": "https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore#readme"
+  "homepage": "https://github.com/Edgar-Saavedra/edgarsaavedra-js-explore#readme",
+  "devDependencies": {
+    "babel-core": "*",
+    "babel-loader": "*",
+    "babel-preset-env": "*",
+    "babel-preset-es2015": "*",
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-webpack": "*",
+    "webpack": "*"
+  }
 }
