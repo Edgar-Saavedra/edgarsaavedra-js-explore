@@ -15,5 +15,5 @@ const betterForLoop2 = (myarray) => {
   }
 }
 
-betterForLoop([1,2,3,4,562,23,2]);
+//betterForLoop([1,2,3,4,562,23,2]);
 betterForLoop2([1,2,3,4,562,23,2]);

@@ -50,10 +50,16 @@ const es5Instances = () =>
 }
 
 /**
- * Using call method to chain constructors for an object
+ * Using call method
+ *
+ * to chain constructors for an object
  * @link : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call
+ *
+ * The difference is that apply lets you invoke the function with arguments as an array;
+ * call requires the parameters be listed explicitly.
+ * A useful mnemonic is "A for array and C for comma."
  */
-const es5Inheritance = () =>
+const es5CallInheritance = () =>
 {
   function Parent(name = 'Family Name',age = 0)
   {
@@ -85,7 +91,7 @@ const es5Inheritance = () =>
 
   function GrandChild(name,age)
   {
-    Child.call(this,name,age);
+    Child.apply(this,[name,age]); //using apply
     this.grandAttr = 'grand child';
     this.sayInfo = function()
     {
@@ -142,12 +148,87 @@ const protoChainES6 = () =>
   console.log(Child.__proto__.__proto__.__proto__);//null
 }
 
+/**
+ * ===
+ * Using class keyword
+ *
+ * ES6 added the class keyword. It remains however ar prototype based object
+ *
+ * The new keywords are class, constructor, static exdends and super
+ * ===
+ */
+const es6Class = () =>
+{
+  class Parent{
+    constructor(age,name)
+    {
+      this.age = age;
+      this.name = name;
+    }
+    talk()
+    {
+      console.log(this.name + " , "+ this.age);
+    }
+    setAge(age){
+      this.age = age;
+    }
+  }
+  class Child extends Parent
+  {
+    constructor(name,age)
+    {
+      super(age,name);
+    }
+    sayHello()
+    {
+      console.log("hello "+this.name);
+    }
+  }
+  var child = new Child("Edgar",22);
+  child.sayHello();
+  child.talk();
+}
 
+
+/**
+ * The lookup time for properties that are high up on the prototype chain can
+ * have a negative impact on performance,
+ *
+ * trying to access nonexistent properties will always traverse the full prototype chain.
+ *
+ * To check whether an object has a property defined on itself and not somewhere on
+ * its prototype chain, it is necessary to use the hasOwnProperty
+ *
+ * console.log(g.hasOwnProperty('vertices'));
+   // true
+
+   console.log(g.hasOwnProperty('nope'));
+   // false
+
+   console.log(g.hasOwnProperty('addVertex'));
+   // false
+
+   console.log(g.__proto__.hasOwnProperty('addVertex'));
+   // true
+
+   Note: It is not enough to check whether a property is undefined.
+   The property might very well exist, but its value just happens to
+   be set to undefined.
+ */
+
+
+/**
+    Bad Practice : Extension of native prototypes
+
+    The only good reason for extending a built-in prototype is to
+    backport the features of newer JavaScript engines, like Array.forEach.
+
+ */
 export const init = () =>
 {
   //es5Instances();
-  //es5Inheritance();
+  es5CallInheritance();
   //protoChainES5();
   //protoChainES6();
-  constructor();
+  //es6Class();
 }
