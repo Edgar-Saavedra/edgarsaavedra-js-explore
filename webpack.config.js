@@ -3,7 +3,8 @@ const path = require('path');
 
 const config = {
   entry: {
-    Basics : './js/basics/index.js'
+    Basics : './js/basics/index.js',
+    DesignPatterns :'./js/designPatterns/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
