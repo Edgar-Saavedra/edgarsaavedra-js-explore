@@ -4,7 +4,8 @@ const path = require('path');
 const config = {
   entry: {
     Basics : './js/basics/index.js',
-    DesignPatterns :'./js/designPatterns/index.js'
+    DesignPatterns :'./js/designPatterns/index.js',
+    ES6 : './js/ES6/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
@@ -23,7 +24,12 @@ const config = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015'],
+          presets: [["env", {
+            "targets": {
+              "browsers": ["last 10 versions", "safari >= 7",'ie 6-8']
+            }
+          }]],
+          //presets: ['es2015'],
           cacheDirectory: true
         }
       }
