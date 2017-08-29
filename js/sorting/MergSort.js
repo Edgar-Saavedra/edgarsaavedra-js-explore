@@ -20,7 +20,9 @@ function mergeTopDown(left, right) {
       array.push(right.shift());
     }
   }
-  return array.concat(left.slice()).concat(right.slice());
+  array = array.concat(left.slice())
+    .concat(right.slice());
+  return array;
 }
 
 function test()
@@ -44,7 +46,19 @@ var countdown = function(value,arr) {
   }
 };
 
-setTimeout(function(){
-  var array = [9, 2, 5, 6,3,4];
-  console.log(mergeSortTopDown(array.slice()));
-},0);
+//setTimeout(function(){
+//  var array = [9, 2, 5, 6,3,4];
+//  console.log(mergeSortTopDown(array.slice()));
+//},0);
+
+var sumOfDigits = function(value)
+{
+  return value ==  0 ?0: value %10 + sumOfDigits(parseInt(value/10));
+}
+
+//console.log(sumOfDigits(55));
+
+//var triangle = function(val)
+//{
+//
+//}

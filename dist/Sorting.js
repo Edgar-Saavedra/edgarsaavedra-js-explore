@@ -75,6 +75,8 @@ var _MergSort = __webpack_require__(12);
 
 var MergeSort = _interopRequireWildcard(_MergSort);
 
+__webpack_require__(13);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -107,7 +109,8 @@ function mergeTopDown(left, right) {
       array.push(right.shift());
     }
   }
-  return array.concat(left.slice()).concat(right.slice());
+  array = array.concat(left.slice()).concat(right.slice());
+  return array;
 }
 
 function test() {
@@ -127,10 +130,63 @@ var countdown = function countdown(value, arr) {
   }
 };
 
-setTimeout(function () {
-  var array = [9, 2, 5, 6, 3, 4];
-  console.log(mergeSortTopDown(array.slice()));
-}, 0);
+//setTimeout(function(){
+//  var array = [9, 2, 5, 6,3,4];
+//  console.log(mergeSortTopDown(array.slice()));
+//},0);
+
+var sumOfDigits = function sumOfDigits(value) {
+  return value == 0 ? 0 : value % 10 + sumOfDigits(parseInt(value / 10));
+};
+
+//console.log(sumOfDigits(55));
+
+//var triangle = function(val)
+//{
+//
+//}
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * ==================================
+ * Backtracing
+ * ==================================
+ */
+
+function backtracing(n, arr) {
+  if (n > 0) {
+    backtracing(n - 1, arr);
+  }
+  arr.push(n);
+}
+var arr1 = [];
+backtracing(10, arr1);
+console.log(arr1); //[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+
+/**
+ * ==================================
+ * Reverse Backtracing
+ * ==================================
+ */
+
+function reverseBacktracing(n, arr) {
+  arr.push(n);
+  //console.log(arr);
+  if (n > 0) {
+    reverseBacktracing(n - 1, arr);
+  }
+}
+
+var arr2 = [];
+reverseBacktracing(10, arr2);
+console.log(arr2); //[ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]
 
 /***/ })
 
