@@ -84,7 +84,7 @@ if(true)
   //this will be hoisted
   var b = 2;
 }
-console.log(b);
+//console.log(b); //2
 
 // let is the new var
 if(true)
@@ -210,8 +210,149 @@ var module = {
  * ====================================================================
  */
 
-async function aa()
-{
-  var friends = await $.get('http://somesite.com/friends');
-  console.log(friends); // we gre promise as if we already got it.
+
+//async function aa() {
+//  var result = await $.get('https://httpbin.org/get');
+//  console.warn(result.origin);
+//}
+
+/**
+ * ====================================================================
+ * Promises
+ * ====================================================================
+ */
+let myPromise  = new Promise(function(resolve,reject){
+//cleaning room
+
+  let isClean = false;
+  setTimeout(function(){
+    isClean = true;
+    if(isClean)
+      resolve('clean');
+    else
+      reject('not clean');
+  },1000)
+
+});
+
+//myPromise.then(function(resolve){
+//  console.log(`the room is ${resolve}`);
+//}).catch(function(reject){
+//  console.log(`the room is ${reject}`);
+//});
+
+let cleanRoom = () => {
+  return new Promise((resolve,reject)=>{
+    resolve(`Cleaned The Room`);
+  })
 }
+
+let removeGarbage = (message) => {
+  return new Promise((resolve,reject)=>{
+    resolve(`${message} remove the garbage`);
+  })
+}
+
+
+let wonIceCream = (message) => {
+  return new Promise((resolve,reject)=>{
+    resolve(`${message} won ice cream`);
+  })
+}
+
+//cleanRoom().then((result)=>{
+//  return removeGarbage(result);
+//}).then((result)=>{
+//  return wonIceCream(result);
+//}).then((result)=>{
+//  console.log(result); //Cleaned The Room remove the garbage won ice cream
+//})
+
+/**
+ * To run all promises in parallel
+ */
+//Promise.all([cleanRoom(),removeGarbage(),wonIceCream()]).then((result)=>{
+//  console.log('all finished');
+//});
+
+
+/**
+ * To run as soon as one finishes
+ */
+//Promise.race([cleanRoom(),removeGarbage(),wonIceCream()]).then((result)=>{
+//  console.log('one of them finished');
+//  console.log(result);
+//});
+
+
+
+// ES6 Promise Example
+
+// server
+// -----------------------------------------------------
+// Imagine this array lives in your server
+const people = [
+  {name: 'John Doe', age: '30'},
+  {name: 'Jane Doe', age: '24'}
+];
+
+// client
+// -----------------------------------------------------
+
+// function that simulates an AJAX call to our
+// imaginary server, where the people array lives.
+// The call may succeed or fail.
+const simulateAJAXCall = (index, cb) => {
+  let chance = Math.random();
+  let isSuccess= (chance <= 0.80) ? true : false;
+
+  return setTimeout(() => {
+    if (isSuccess) {
+      return cb(people[index]);
+    }
+    else {
+      return cb(null);
+    }
+  }, 1000)
+}
+
+// Function that returns a promise to search
+// a person according to his index
+const getPerson = (index) => {
+
+  // The promise resolves if the data comes back
+  // successfully and it rejects in case of an error
+  return new Promise((resolve, reject) => {
+
+    console.log('fetching person...');
+    simulateAJAXCall(index, (data) => {
+
+      if (data === null) {
+        reject('Something went wrong!');
+      }
+
+      resolve(data);
+    });
+  });
+}
+
+// Call getPerson, which will return a promise.
+// If the promise resolves, then log the person,
+// if there's an error, it will go to the catch
+// block and be handled there.
+//Promise.race([getPerson(1),getPerson(0)])
+//.then(person => {
+//
+//  console.log(person);
+//}).catch(error => {
+//
+//  console.log(error);
+//});
+
+//async await allows for more sync writting of promises
+const showMyPerson = async () =>
+{
+  var myPerson = await getPerson(1);
+  console.log('showMyPerson()',myPerson);
+}
+showMyPerson();

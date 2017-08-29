@@ -73,34 +73,6 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var aa = function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var friends;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return $.get('http://somesite.com/friends');
-
-          case 2:
-            friends = _context.sent;
-
-            console.log(friends); // we gre promise as if we already got it.
-
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, this);
-  }));
-
-  return function aa() {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -196,7 +168,7 @@ if (true) {
   //this will be hoisted
   var b = 2;
 }
-console.log(b);
+//console.log(b); //2
 
 // let is the new var
 if (true) {
@@ -335,7 +307,163 @@ var _module = {
    * ====================================================================
    */
 
+  //async function aa() {
+  //  var result = await $.get('https://httpbin.org/get');
+  //  console.warn(result.origin);
+  //}
+
+  /**
+   * ====================================================================
+   * Promises
+   * ====================================================================
+   */
+};var myPromise = new Promise(function (resolve, reject) {
+  //cleaning room
+
+  var isClean = false;
+  setTimeout(function () {
+    isClean = true;
+    if (isClean) resolve('clean');else reject('not clean');
+  }, 1000);
+});
+
+//myPromise.then(function(resolve){
+//  console.log(`the room is ${resolve}`);
+//}).catch(function(reject){
+//  console.log(`the room is ${reject}`);
+//});
+
+var cleanRoom = function cleanRoom() {
+  return new Promise(function (resolve, reject) {
+    resolve("Cleaned The Room");
+  });
 };
+
+var removeGarbage = function removeGarbage(message) {
+  return new Promise(function (resolve, reject) {
+    resolve(message + " remove the garbage");
+  });
+};
+
+var wonIceCream = function wonIceCream(message) {
+  return new Promise(function (resolve, reject) {
+    resolve(message + " won ice cream");
+  });
+};
+
+//cleanRoom().then((result)=>{
+//  return removeGarbage(result);
+//}).then((result)=>{
+//  return wonIceCream(result);
+//}).then((result)=>{
+//  console.log(result); //Cleaned The Room remove the garbage won ice cream
+//})
+
+/**
+ * To run all promises in parallel
+ */
+//Promise.all([cleanRoom(),removeGarbage(),wonIceCream()]).then((result)=>{
+//  console.log('all finished');
+//});
+
+
+/**
+ * To run as soon as one finishes
+ */
+//Promise.race([cleanRoom(),removeGarbage(),wonIceCream()]).then((result)=>{
+//  console.log('one of them finished');
+//  console.log(result);
+//});
+
+
+// ES6 Promise Example
+
+// server
+// -----------------------------------------------------
+// Imagine this array lives in your server
+var people = [{ name: 'John Doe', age: '30' }, { name: 'Jane Doe', age: '24' }];
+
+// client
+// -----------------------------------------------------
+
+// function that simulates an AJAX call to our
+// imaginary server, where the people array lives.
+// The call may succeed or fail.
+var simulateAJAXCall = function simulateAJAXCall(index, cb) {
+  var chance = Math.random();
+  var isSuccess = chance <= 0.80 ? true : false;
+
+  return setTimeout(function () {
+    if (isSuccess) {
+      return cb(people[index]);
+    } else {
+      return cb(null);
+    }
+  }, 1000);
+};
+
+// Function that returns a promise to search
+// a person according to his index
+var getPerson = function getPerson(index) {
+
+  // The promise resolves if the data comes back
+  // successfully and it rejects in case of an error
+  return new Promise(function (resolve, reject) {
+
+    console.log('fetching person...');
+    simulateAJAXCall(index, function (data) {
+
+      if (data === null) {
+        reject('Something went wrong!');
+      }
+
+      resolve(data);
+    });
+  });
+};
+
+// Call getPerson, which will return a promise.
+// If the promise resolves, then log the person,
+// if there's an error, it will go to the catch
+// block and be handled there.
+//Promise.race([getPerson(1),getPerson(0)])
+//.then(person => {
+//
+//  console.log(person);
+//}).catch(error => {
+//
+//  console.log(error);
+//});
+
+//async await allows for more sync writting of promises
+var showMyPerson = function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var myPerson;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return getPerson(1);
+
+          case 2:
+            myPerson = _context.sent;
+
+            console.log('showMyPerson()', myPerson);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, undefined);
+  }));
+
+  return function showMyPerson() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+showMyPerson();
 
 /***/ })
 

@@ -27,5 +27,8 @@
     "grunt-webpack": "*",
     "jest": "*",
     "webpack": "*"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
   }
 }
