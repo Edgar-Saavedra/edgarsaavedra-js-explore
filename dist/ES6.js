@@ -436,6 +436,7 @@ var getPerson = function getPerson(index) {
 //});
 
 //async await allows for more sync writting of promises
+// we will need to use babel-polyfill to use async and await
 var showMyPerson = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var myPerson;

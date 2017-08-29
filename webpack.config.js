@@ -5,7 +5,8 @@ const config = {
   entry: {
     Basics : './js/basics/index.js',
     DesignPatterns :'./js/designPatterns/index.js',
-    ES6 : './js/ES6/index.js'
+    ES6 : './js/ES6/index.js',
+    Sorting : './js/sorting/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),

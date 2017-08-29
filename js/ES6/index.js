@@ -350,6 +350,7 @@ const getPerson = (index) => {
 //});
 
 //async await allows for more sync writting of promises
+// we will need to use babel-polyfill to use async and await
 const showMyPerson = async () =>
 {
   var myPerson = await getPerson(1);
