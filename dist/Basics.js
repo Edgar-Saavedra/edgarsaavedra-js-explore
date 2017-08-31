@@ -232,7 +232,7 @@ var es5CallInheritance = function es5CallInheritance() {
   //======================== BIND =====================
   // NOTE: Use .bind() when you want that function to later be called with a certain context
   function MyObject(element, style) {
-    var _this2 = this;
+    var _this3 = this;
 
     this.elm = element;
     this.clicked = false;
@@ -249,12 +249,40 @@ var es5CallInheritance = function es5CallInheritance() {
       });
     };
 
+    this.getchildren = function (element) {
+      var _this2 = this;
+
+      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var arr = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+      if (!element) element = this.elm;
+      //if id or single
+      if (!element.length) {
+        if (element.hasChildNodes()) {
+          if (size > 0) {
+            arr.push(element);
+          }
+          this.getchildren(element.childNodes, size += 1, arr);
+        }
+      } else
+        //if class
+        Array.prototype.map.call(element, function (el, i) {
+          if (el.hasChildNodes()) {
+            if (size > 0) {
+              arr.push(el);
+            }
+            _this2.getchildren(el.childNodes, size += 1, arr);
+          }
+        });
+      return arr;
+    };
+
     if (this.elm.length) {
       Array.prototype.map.call(this.elm, function (element, i) {
-        element.addEventListener('click', _this2.click.bind(_this2), false);
-        element.addEventListener('mouseenter', _this2.mouseenter.bind(_this2), false);
-        element.addEventListener('mouseleave', _this2.mouseleave.bind(_this2), false);
-        _this2.setStyles(element);
+        element.addEventListener('click', _this3.click.bind(_this3), false);
+        element.addEventListener('mouseenter', _this3.mouseenter.bind(_this3), false);
+        element.addEventListener('mouseleave', _this3.mouseleave.bind(_this3), false);
+        _this3.setStyles(element);
       });
     } else {
       element.addEventListener('click', this.click.bind(this), false);
@@ -292,6 +320,15 @@ var es5CallInheritance = function es5CallInheritance() {
     padding: "10px",
     color: "white"
   });
+
+  var allDivs2 = new MyObject(document.getElementsByClassName('a-div2'), {
+    backgroundColor: "white",
+    fontSize: "20px",
+    padding: "10px",
+    color: "black",
+    fontWeight: 'bold'
+  });
+  console.log(allDivs2.getchildren());
 
   var greatGrandChild = new GrandChild();
   greatGrandChild.talk(); //Family Name - 0 child attr grand child

@@ -141,6 +141,36 @@ const es5CallInheritance = () =>
       });
     }
 
+    this.getchildren = function (element ,size=0, arr = [])
+    {
+      if(!element)
+        element = this.elm;
+      //if id or single
+      if(!element.length)
+      {
+        if(element.hasChildNodes())
+        {
+          if(size>0)
+          {
+            arr.push(element);
+          }
+          this.getchildren(element.childNodes,size+= 1,arr);
+        }
+      }else
+        //if class
+        Array.prototype.map.call(element,(el,i)=>{
+          if(el.hasChildNodes())
+          {
+            if(size>0)
+            {
+              arr.push(el);
+            }
+            this.getchildren(el.childNodes,size+= 1,arr);
+          }
+        });
+      return arr;
+    }
+
     if(this.elm.length)
     {
       Array.prototype.map.call(this.elm,(element,i)=>{
@@ -187,6 +217,15 @@ const es5CallInheritance = () =>
     padding : "10px",
     color : "white"
   });
+
+  let allDivs2 = new MyObject(document.getElementsByClassName('a-div2'),{
+    backgroundColor: "white",
+    fontSize : "20px",
+    padding : "10px",
+    color : "black",
+    fontWeight : 'bold'
+  });
+  console.log(allDivs2.getchildren());
 
   let greatGrandChild = new GrandChild();
   greatGrandChild.talk(); //Family Name - 0 child attr grand child
