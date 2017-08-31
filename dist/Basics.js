@@ -86,9 +86,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 //PrototypalInheritance.inheritingProperties();
 PrototypalInheritance.init();
-GeneralInterview.init();
-new _EventLoop.EventLoop();
-new _PromisesCallBacks.PromisesCallBacks();
+//GeneralInterview.init();
+//new EventLoop();
+//new PromisesCallBacks();
 
 /***/ }),
 /* 1 */
@@ -116,7 +116,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //Important null is a valid object, null has no prototype, and acts as the final link in this prototype chain.
 
 //all objects in JavaScript are instances of Object which sits on the top of a prototype chain
-
+/**
+ * ======================================================================
+ * Creating objects
+ * ======================================================================
+ */
 var inheritingProperties = function inheritingProperties() {
   //JavaScript objects are dynamic "bags" of properties (referred to as own properties)
   var proto = {
@@ -132,6 +136,11 @@ var inheritingProperties = function inheritingProperties() {
   return false;
 };
 
+/**
+ * ======================================================================
+ * ES5 Classes
+ * ======================================================================
+ */
 /**
  * A simple example to create instances of an object
  * and using the prototype
@@ -162,6 +171,17 @@ var es5Instances = function es5Instances() {
 };
 
 /**
+ * ======================================================================
+ * the CALL APPLY BIND method
+ * ======================================================================
+ */
+/**
+ *
+ * Use .bind() when you want that function to later be called with a certain context,
+ * useful in events. Use .call() or .apply() when you want to invoke the function
+ * immediately, and modify the context.
+ *
+ *
  * Using call method
  *
  * to chain constructors for an object
@@ -185,7 +205,7 @@ var es5CallInheritance = function es5CallInheritance() {
       console.log(this.sayInfo());
     };
   }
-
+  // ====================== CALL ======================
   function Child(name, age) {
     Parent.call(this, name, age);
     this.childAttr = 'child attr';
@@ -197,6 +217,7 @@ var es5CallInheritance = function es5CallInheritance() {
     };
   }
 
+  //======================= APPLY ======================
   function GrandChild(name, age) {
     Child.apply(this, [name, age]); //using apply
     this.grandAttr = 'grand child';
@@ -207,6 +228,71 @@ var es5CallInheritance = function es5CallInheritance() {
       console.log(this.sayInfo());
     };
   };
+
+  //======================== BIND =====================
+  // NOTE: Use .bind() when you want that function to later be called with a certain context
+  function MyObject(element, style) {
+    var _this2 = this;
+
+    this.elm = element;
+    this.clicked = false;
+    this.style = style || {
+      backgroundColor: 'red',
+      color: 'blue',
+      border: 'solid 1px black'
+    };
+    this.setStyles = function (element) {
+      var _this = this;
+
+      Object.keys(this.style).map(function (key, index) {
+        element.style[key] = _this.style[key];
+      });
+    };
+
+    if (this.elm.length) {
+      Array.prototype.map.call(this.elm, function (element, i) {
+        element.addEventListener('click', _this2.click.bind(_this2), false);
+        element.addEventListener('mouseenter', _this2.mouseenter.bind(_this2), false);
+        element.addEventListener('mouseleave', _this2.mouseleave.bind(_this2), false);
+        _this2.setStyles(element);
+      });
+    } else {
+      element.addEventListener('click', this.click.bind(this), false);
+      element.addEventListener('mouseenter', this.mouseenter.bind(this), false);
+      element.addEventListener('mouseleave', this.mouseleave.bind(this), false);
+      this.setStyles(element);
+    }
+  };
+
+  MyObject.prototype.click = function (event) {
+    var t = this;
+    var element = event.target;
+    element.style.color = 'purple';
+    element.style.fontWeight = 'bold';
+    event.stopPropagation();
+  };
+  MyObject.prototype.mouseenter = function (event) {
+    var element = event.target;
+    element.style.backgroundColor = 'white';
+    event.stopPropagation();
+  };
+  MyObject.prototype.mouseleave = function (event) {
+    console.log('enter');
+    var element = event.target;
+    this.setStyles(element);
+    event.stopPropagation();
+  };
+
+  var a_link = new MyObject(document.getElementById('MyObject'));
+  var allDivs = new MyObject(document.getElementsByClassName('a-div'), {
+    backgroundColor: "pink",
+    borderRadius: "5px",
+    border: "solid 20px green",
+    fontSize: "20px",
+    padding: "10px",
+    color: "white"
+  });
+
   var greatGrandChild = new GrandChild();
   greatGrandChild.talk(); //Family Name - 0 child attr grand child
   greatGrandChild = new GrandChild('Grand Name', 20);

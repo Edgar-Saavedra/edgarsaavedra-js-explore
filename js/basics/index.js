@@ -6,6 +6,6 @@ import {PromisesCallBacks} from './PromisesCallBacks';
 
 //PrototypalInheritance.inheritingProperties();
 PrototypalInheritance.init();
-GeneralInterview.init();
-new EventLoop();
-new PromisesCallBacks();
+//GeneralInterview.init();
+//new EventLoop();
+//new PromisesCallBacks();

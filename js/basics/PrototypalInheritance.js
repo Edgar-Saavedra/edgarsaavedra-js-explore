@@ -5,7 +5,11 @@
 //Important null is a valid object, null has no prototype, and acts as the final link in this prototype chain.
 
 //all objects in JavaScript are instances of Object which sits on the top of a prototype chain
-
+/**
+ * ======================================================================
+ * Creating objects
+ * ======================================================================
+ */
 const inheritingProperties = () =>{
   //JavaScript objects are dynamic "bags" of properties (referred to as own properties)
   var proto = {
@@ -21,6 +25,11 @@ const inheritingProperties = () =>{
   return false;
 }
 
+/**
+ * ======================================================================
+ * ES5 Classes
+ * ======================================================================
+ */
 /**
  * A simple example to create instances of an object
  * and using the prototype
@@ -50,6 +59,17 @@ const es5Instances = () =>
 }
 
 /**
+ * ======================================================================
+ * the CALL APPLY BIND method
+ * ======================================================================
+ */
+/**
+ *
+ * Use .bind() when you want that function to later be called with a certain context,
+ * useful in events. Use .call() or .apply() when you want to invoke the function
+ * immediately, and modify the context.
+ *
+ *
  * Using call method
  *
  * to chain constructors for an object
@@ -74,7 +94,7 @@ const es5CallInheritance = () =>
       console.log(this.sayInfo());
     }
   }
-
+  // ====================== CALL ======================
   function Child(name,age)
   {
     Parent.call(this,name,age);
@@ -89,6 +109,7 @@ const es5CallInheritance = () =>
     }
   }
 
+  //======================= APPLY ======================
   function GrandChild(name,age)
   {
     Child.apply(this,[name,age]); //using apply
@@ -102,6 +123,71 @@ const es5CallInheritance = () =>
       console.log(this.sayInfo());
     }
   };
+
+  //======================== BIND =====================
+  // NOTE: Use .bind() when you want that function to later be called with a certain context
+  function MyObject(element,style) {
+    this.elm = element;
+    this.clicked = false;
+    this.style = style||{
+      backgroundColor : 'red',
+      color : 'blue',
+      border : 'solid 1px black'
+    }
+    this.setStyles = function(element)
+    {
+      Object.keys(this.style).map((key,index)=>{
+        element.style[key] = this.style[key];
+      });
+    }
+
+    if(this.elm.length)
+    {
+      Array.prototype.map.call(this.elm,(element,i)=>{
+        element.addEventListener('click', this.click.bind(this), false);
+        element.addEventListener('mouseenter', this.mouseenter.bind(this), false);
+        element.addEventListener('mouseleave', this.mouseleave.bind(this), false);
+        this.setStyles(element);
+      });
+    }
+    else
+    {
+      element.addEventListener('click', this.click.bind(this), false);
+      element.addEventListener('mouseenter', this.mouseenter.bind(this), false);
+      element.addEventListener('mouseleave', this.mouseleave.bind(this), false);
+      this.setStyles(element);
+    }
+  };
+
+  MyObject.prototype.click = function(event) {
+    var t = this;
+    let element = event.target;
+    element.style.color = 'purple';
+    element.style.fontWeight = 'bold';
+    event.stopPropagation();
+  };
+  MyObject.prototype.mouseenter = function(event) {
+    let element = event.target;
+    element.style.backgroundColor = 'white';
+    event.stopPropagation();
+  };
+  MyObject.prototype.mouseleave = function(event) {
+    console.log('enter');
+    let element = event.target;
+    this.setStyles(element);
+    event.stopPropagation();
+  };
+
+  let a_link = new MyObject(document.getElementById('MyObject'));
+  let allDivs = new MyObject(document.getElementsByClassName('a-div'),{
+    backgroundColor: "pink",
+    borderRadius : "5px",
+    border : "solid 20px green",
+    fontSize : "20px",
+    padding : "10px",
+    color : "white"
+  });
+
   let greatGrandChild = new GrandChild();
   greatGrandChild.talk(); //Family Name - 0 child attr grand child
   greatGrandChild = new GrandChild('Grand Name',20);
